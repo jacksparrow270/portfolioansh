@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -323,6 +322,31 @@
       grid-template-columns: 1fr !important;
     }
     .about-portrait {
+      display: none;
+    }
+  }
+
+  /* Timeline: collapse to single column on small screens */
+  @media (max-width: 720px) {
+    .timeline-entry {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+  }
+
+  /* Small project cards: single column on mobile */
+  @media (max-width: 768px) {
+    .projects-small-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* Featured project: stack vertically on small screens */
+  @media (max-width: 800px) {
+    .featured-project-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .featured-project-terminal {
       display: none;
     }
   }

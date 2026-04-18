@@ -1,7 +1,6 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
-import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { OrbBackground } from "@/components/OrbBackground";
@@ -59,52 +58,16 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "0xAnsh — Cybersecurity & Cloud" },
-      {
-        name: "description",
-        content:
-          "Ansh Khare — B.Tech Cybersecurity student. Python, Cloud computing, and offensive security.",
-      },
-      { name: "author", content: "Ansh Khare" },
-      { property: "og:title", content: "0xAnsh — Cybersecurity & Cloud" },
-      {
-        property: "og:description",
-        content: "B.Tech Cybersecurity student. Python, Cloud, and offensive security.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "stylesheet", href: appCss }],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   useCursorGlow();
 
   return (
     <>
-      {/* Cursor glow — fixed, pointer-events:none, z-index:0 */}
+      {/* Cursor glow — fixed, pointer-events:none */}
       <div
         id="cursor-glow"
         style={{
@@ -122,7 +85,7 @@ function RootComponent() {
       />
       <OrbBackground />
       <Header />
-      <main className="relative z-10 pt-28">
+      <main className="relative z-10" style={{ paddingTop: "96px" }}>
         <AnimatePresence mode="wait">
           <Outlet />
         </AnimatePresence>

@@ -50,7 +50,6 @@ const focusCards = [
 ];
 
 // ─── TYPEWRITER HOOK ────────────────────────────────────────────────────────
-// Returns [displayedText, isDone]
 const HERO_TEXT = "I build infrastructure.\nThen I try to break it.";
 
 function useTypewriter(delay = 400) {
@@ -59,7 +58,6 @@ function useTypewriter(delay = 400) {
 
   useEffect(() => {
     let i = 0;
-    let rafId: number;
     let timeoutId: ReturnType<typeof setTimeout>;
 
     function type() {
@@ -74,17 +72,12 @@ function useTypewriter(delay = 400) {
     }
 
     timeoutId = setTimeout(type, delay);
-    return () => {
-      clearTimeout(timeoutId);
-      cancelAnimationFrame(rafId);
-    };
+    return () => clearTimeout(timeoutId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [displayed, done] as const;
 }
-
-// ─── CURSOR GLOW — now handled globally in __root.tsx ────────────────────
 
 // ─── SCROLL REVEAL ──────────────────────────────────────────────────────────
 function useReveal() {
@@ -107,11 +100,9 @@ function useReveal() {
 }
 
 // ─── RENDER HERO TEXT ───────────────────────────────────────────────────────
-// Split displayed text into two lines, render second line in accent + italic
 function renderHeroText(text: string, cursorVisible: boolean) {
   const newlineIdx = text.indexOf("\n");
   if (newlineIdx === -1) {
-    // Still on first line
     return (
       <>
         {text}
@@ -185,7 +176,10 @@ function HomePage() {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          padding: "0 24px",
+          paddingTop: 120,
+          paddingBottom: 80,
+          paddingLeft: 24,
+          paddingRight: 24,
           maxWidth: 960,
           margin: "0 auto",
         }}
@@ -199,15 +193,11 @@ function HomePage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 13,
-              color: "var(--text-muted)",
-              marginBottom: 32,
-              letterSpacing: "0.02em",
-            }}
+            className="eyebrow"
+            style={{ marginBottom: 32, justifyContent: "center" }}
           >
-            Cloud Security Engineer · AWS · Python · Linux
+            <span className="eyebrow-dot" />
+            cloud security engineer
           </motion.div>
 
           {/* H1 — typewriter target */}
@@ -222,7 +212,7 @@ function HomePage() {
               margin: 0,
               maxWidth: 800,
               whiteSpace: "pre-wrap",
-              minHeight: "2.2em", // prevent layout jump while typing
+              minHeight: "2.2em",
             }}
           >
             {renderHeroText(displayed, !typingDone)}
@@ -234,16 +224,15 @@ function HomePage() {
             animate={{ opacity: typingDone ? 1 : 0 }}
             transition={{ duration: 0.4, ease: "easeIn" }}
             style={{
-              fontFamily: "'Inter', system-ui, sans-serif",
-              fontSize: 15,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 13,
               lineHeight: 1.65,
-              color: "var(--text-secondary)",
-              marginTop: 24,
+              color: "var(--text-muted)",
+              marginTop: 20,
               maxWidth: 560,
             }}
           >
-            B.Tech Cybersecurity student focused on cloud infrastructure,
-            threat detection, and writing tools that make security observable.
+            Cloud Security · AWS · Python · Linux
           </motion.p>
 
           {/* CTAs — fades in after typing */}
@@ -251,7 +240,7 @@ function HomePage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: typingDone ? 1 : 0, y: typingDone ? 0 : 12 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            style={{ marginTop: 40, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
+            style={{ marginTop: 32, display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}
           >
             <Link
               to="/projects"
@@ -312,7 +301,10 @@ function HomePage() {
           overflow: "hidden",
           borderTop: "1px solid rgba(255,255,255,0.06)",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
-          padding: "20px 0",
+          padding: "14px 0",
+          background: "rgba(255,255,255,0.01)",
+          margin: 0,
+          width: "100%",
         }}
       >
         <div className="animate-marquee" style={{ display: "flex", gap: 48, whiteSpace: "nowrap" }}>
@@ -326,99 +318,133 @@ function HomePage() {
               }}
             >
               {item}
-              <span style={{ color: "var(--text-muted)", margin: "0 0 0 48px" }}> · </span>
+              <span style={{ color: "var(--text-muted)", margin: "0 0 0 48px" }}>·</span>
             </span>
           ))}
         </div>
       </section>
 
-      {/* ── FOCUS CARDS — CSS tilt on hover ──────────────────────────────── */}
+      {/* ── FOCUS CARDS ──────────────────────────────────────────────────── */}
       <section
         style={{
           position: "relative",
           zIndex: 1,
           maxWidth: 1152,
-          margin: "96px auto 0",
+          margin: "80px auto 0",
           padding: "0 24px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: 24,
         }}
       >
-        {focusCards.map((card, i) => (
-          <motion.div
-            key={i}
-            className="reveal card group focus-card-tilt"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: i * 0.08, duration: 0.45 }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
-              <card.icon size={16} style={{ color: "var(--accent)", flexShrink: 0 }} />
-              <span
+        {/* Section eyebrow */}
+        <div className="eyebrow reveal" style={{ marginBottom: 24 }}>
+          <span className="eyebrow-dot" />
+          what i'm building
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 16,
+          }}
+        >
+          {focusCards.map((card, i) => (
+            <motion.div
+              key={i}
+              className="reveal card group focus-card-tilt"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ delay: i * 0.08, duration: 0.45 }}
+              style={{ padding: 24 }}
+            >
+              {/* Icon badge */}
+              <div
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 11,
-                  color: "var(--text-muted)",
+                  width: 32,
+                  height: 32,
+                  background: "var(--accent-dim)",
+                  borderRadius: 6,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 16,
                 }}
               >
-                {card.label}
-              </span>
-            </div>
-            <h3
-              style={{
-                fontFamily: "'Inter', system-ui, sans-serif",
-                fontWeight: 600,
-                fontSize: 20,
-                color: "var(--text-primary)",
-                lineHeight: 1.35,
-                margin: "0 0 12px",
-              }}
-            >
-              {card.title}
-            </h3>
-            <p
-              style={{
-                fontFamily: "'Inter', system-ui, sans-serif",
-                fontSize: 15,
-                lineHeight: 1.6,
-                color: "var(--text-secondary)",
-                margin: 0,
-              }}
-            >
-              {card.desc}
-            </p>
-          </motion.div>
-        ))}
+                <card.icon size={18} style={{ color: "var(--accent)" }} />
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                <span
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 11,
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  {card.label}
+                </span>
+              </div>
+              <h3
+                style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 18,
+                  color: "var(--text-primary)",
+                  lineHeight: 1.35,
+                  margin: "0 0 10px",
+                }}
+              >
+                {card.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  color: "var(--text-secondary)",
+                  margin: 0,
+                }}
+              >
+                {card.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* ── STATS STRIP ──────────────────────────────────────────────────── */}
       <section
-        className="reveal stats-strip"
+        className="reveal"
         style={{
           position: "relative",
           zIndex: 1,
           maxWidth: 1152,
-          margin: "96px auto 0",
+          margin: "80px auto 0",
           padding: "48px 24px",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          background: "rgba(255,255,255,0.02)",
         }}
       >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: 24,
+            gridTemplateColumns: "repeat(4, 1fr)",
             textAlign: "center",
           }}
         >
           {stats.map((s, i) => (
-            <div key={i} className="reveal" style={{ animationDelay: `${i * 80}ms` }}>
+            <div
+              key={i}
+              className="reveal"
+              style={{
+                borderRight: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                padding: "0 24px",
+              }}
+            >
               <div
                 style={{
                   fontFamily: "'Syne', system-ui, sans-serif",
                   fontWeight: 700,
-                  fontSize: 40,
+                  fontSize: 48,
                   color: "var(--text-primary)",
                   lineHeight: 1,
                 }}
@@ -431,6 +457,7 @@ function HomePage() {
                   fontSize: 11,
                   color: "var(--text-muted)",
                   marginTop: 8,
+                  textTransform: "lowercase",
                 }}
               >
                 {s.l}
