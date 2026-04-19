@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Scan, Activity, Terminal } from "lucide-react";
-import portrait from "@/assets/portrait.png";
+import portrait from "@/assets/about-portrait.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -225,18 +225,32 @@ function AboutPage() {
           transition={{ duration: 0.6, delay: 0.15 }}
           style={{ position: "sticky", top: 80 }}
         >
-          <img
-            src={portrait}
-            alt="Ansh Khare"
+          <div
             style={{
-              width: 220,
-              height: 260,
-              objectFit: "cover",
-              borderRadius: 12,
+              width: 260,
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
               border: "var(--border-default)",
-              display: "block",
+              background:
+                "radial-gradient(circle at 50% 20%, rgba(232,98,42,0.22), rgba(255,255,255,0.02) 58%, rgba(255,255,255,0.01) 100%)",
+              padding: 10,
+              overflow: "hidden",
+              boxShadow: "0 18px 48px rgba(0, 0, 0, 0.28)",
             }}
-          />
+          >
+            <img
+              src={portrait}
+              alt="Ansh Khare"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                objectPosition: "center top",
+                borderRadius: "50%",
+                display: "block",
+              }}
+            />
+          </div>
         </motion.div>
       </div>
 

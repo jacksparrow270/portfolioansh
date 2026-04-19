@@ -322,7 +322,8 @@
       grid-template-columns: 1fr !important;
     }
     .about-portrait {
-      display: none;
+      position: static !important;
+      margin: 0 auto;
     }
   }
 
