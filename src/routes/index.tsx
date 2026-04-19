@@ -228,8 +228,9 @@ function HomePage() {
               fontSize: 13,
               lineHeight: 1.65,
               color: "var(--text-muted)",
-              marginTop: 20,
+              margin: "20px auto 0",
               maxWidth: 560,
+              textAlign: "center",
             }}
           >
             Cloud Security · AWS · Python · Linux
